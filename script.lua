@@ -65,8 +65,8 @@ end
 
 function onPlayerLeave(steam_id, name, peer_id, admin, auth)
     -- antilag does not handle general vehicle cleanup
-    steam_ids[peer_id] = nil
-    peer_ids[string(steam_id)] = nil
+    --steam_ids[peer_id] = nil
+    --peer_ids[string(steam_id)] = nil
 end
 
 function httpReply(port, url, response_body)
@@ -194,7 +194,7 @@ function onTick(game_ticks)
         for idx, vehicle in ipairs(vehicles) do
             -- check for excessive vehicle load times
             if not vehicle.loaded then
-                -- this may cause an issue for smaller vehicles spawned while the server is lagging. 
+                -- this may cause an issue for smaller vehicles spawned while the server is lagging.
                 -- Vehicle mass or voxel count should like play a role in this
                 if current_time - vehicle.spawn_time > g_savedata.antilag.load_time_threshold then
                     server.despawnVehicle(vehicle.vehicle_id, true)
@@ -220,7 +220,7 @@ function onTick(game_ticks)
         end
     end
 
-    for idx, player in ipairs(server.getPlayers()) do
+    for idx, player in pairs(server.getPlayers()) do
         local sid = tostring(player.steam_id)
         local max = g_savedata.vehicle_limits[sid]
         if max == nil then
