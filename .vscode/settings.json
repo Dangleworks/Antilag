@@ -1,0 +1,9 @@
+{
+    "Lua.diagnostics.globals": [
+        "g_savedata",
+        "server"
+    ],
+    "Lua.diagnostics.disable": [
+        "lowercase-global"
+    ]
+}

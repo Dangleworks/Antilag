@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<playlist path_id="app_data/data/missions/antilag" folder_path="data/missions/antilag" file_store="4" name="Anti-Lag">
+	<locations location_id_counter="14" component_id_counter="26">
+		<locations>
+			<l id="1" tile="data/tiles/island12.xml" name="STARTER BASE" is_env_mod="true" env_mod_spawn_num="1">
+				<components>
+					<c component_type="10" id="1" vehicle_parent_id="0" cargo_zone_import_cargo_type="boat_workbench" display_name="" is_sea_floor_object="false" show_zone_on_map="false" zone_type="0" zone_radius="2.5" dynamic_object_type="2" loot_type="0" character_outfit_category="11" character_type="1" character_special_outfit="0" vehicle_file_name="" vehicle_file_store="1" vehicle_is_static="false" vehicle_is_no_sleep="false" vehicle_is_editable="false" vehicle_is_show_on_map="false" vehicle_is_transponder_active="false" is_fire_lit="true" is_explosion="false" explosion_magnitude="1" flare_hue="0" is_flare_lit="true" vehicle_button_name="" ice_type="0" ice_scale="1" animal_type="0">
+						<spawn_transform 00="1" 01="0" 02="0" 03="0" 10="0" 11="1" 12="0" 13="0" 20="0" 21="0" 22="1" 23="0" 30="-32.758892" 31="8.518944" 32="16.841085" 33="1"/>
+						<spawn_bounds>
+							<min x="-5" y="-5" z="-5"/>
+							<max x="5" y="5" z="5"/>
+						</spawn_bounds>
+						<spawn_local_offset x="-0" y="-0" z="-0"/>
+					</c>
+					<c component_type="10" id="15" vehicle_parent_id="0" cargo_zone_import_cargo_type="boat_spawn" display_name="" is_sea_floor_object="false" show_zone_on_map="false" zone_type="0" zone_radius="2.5" dynamic_object_type="2" loot_type="0" character_outfit_category="11" character_type="1" character_special_outfit="0" vehicle_file_name="" vehicle_file_store="1" vehicle_is_static="false" vehicle_is_no_sleep="false" vehicle_is_editable="false" vehicle_is_show_on_map="false" vehicle_is_transponder_active="false" is_fire_lit="true" is_explosion="false" explosion_magnitude="1" flare_hue="0" is_flare_lit="true" vehicle_button_name="" ice_type="0" ice_scale="1" animal_type="0">
+						<spawn_transform 00="1" 01="0" 02="0" 03="0" 10="0" 11="1" 12="0" 13="0" 20="0" 21="0" 22="1" 23="0" 30="-8.841229" 31="4.999992" 32="-205.608124" 33="1"/>
+						<spawn_bounds>
+							<min x="-125.37253" y="-5" z="-5"/>
+							<max x="125.37253" y="5" z="5"/>
+						</spawn_bounds>
+						<spawn_local_offset x="-0" y="-0" z="-0"/>
+					</c>
+				</components>
+			</l>
+			<l id="2" tile="data/tiles/island_15.xml" name="CREATIVE BASE" is_env_mod="true" env_mod_spawn_num="1">
+				<components>
+					<c component_type="10" id="2" vehicle_parent_id="0" cargo_zone_import_cargo_type="boat_workbench" display_name="" is_sea_floor_object="false" show_zone_on_map="false" zone_type="0" zone_radius="2.5" dynamic_object_type="2" loot_type="0" character_outfit_category="11" character_type="1" character_special_outfit="0" vehicle_file_name="" vehicle_file_store="1" vehicle_is_static="false" vehicle_is_no_sleep="false" vehicle_is_editable="false" vehicle_is_show_on_map="false" vehicle_is_transponder_active="false" is_fire_lit="true" is_explosion="false" explosion_magnitude="1" flare_hue="0" is_flare_lit="true" vehicle_button_name="" ice_type="0" ice_scale="1" animal_type="0">
+						<spawn_transform 00="1" 01="0" 02="0" 03="0" 10="0" 11="1" 12="0" 13="0" 20="0" 21="0" 22="1" 23="0" 30="-209.122833" 31="9.659649" 32="-43.341236" 33="1"/>
+						<spawn_bounds>
+							<min x="-5" y="-5" z="-5"/>
+							<max x="5" y="5" z="5"/>
+						</spawn_bounds>
+						<spawn_local_offset x="-0" y="-0" z="-0"/>
+					</c>
+					<c component_type="10" id="16" vehicle_parent_id="0" cargo_zone_import_cargo_type="boat_spawn" display_name="" is_sea_floor_object="false" show_zone_on_map="false" zone_type="0" zone_radius="2.5" dynamic_object_type="2" loot_type="0" character_outfit_category="11" character_type="1" character_special_outfit="0" vehicle_file_name="" vehicle_file_store="1" vehicle_is_static="false" vehicle_is_no_sleep="false" vehicle_is_editable="false" vehicle_is_show_on_map="false" vehicle_is_transponder_active="false" is_fire_lit="true" is_explosion="false" explosion_magnitude="1" flare_hue="0" is_flare_lit="true" vehicle_button_name="" ice_type="0" ice_scale="1" animal_type="0">
+						<spawn_transform 00="1" 01="0" 02="0" 03="0" 10="0" 11="1" 12="0" 13="0" 20="0" 21="0" 22="1" 23="0" 30="-308.151154" 31="4.045234" 32="-509.179565" 33="1"/>
+						<spawn_bounds>
+							<min x="-157.128981" y="-5" z="-5"/>
+							<max x="157.128981" y="5" z="5"/>
+						</spawn_bounds>
+						<spawn_local_offset x="-0" y="-0" z="-0"/>
+					</c>
+				</components>
+			</l>
+			<l id="3" tile="data/tiles/island_25.xml" name="HARBOUR BASE" is_env_mod="true" env_mod_spawn_num="1">
+				<components>
+					<c component_type="10" id="3" vehicle_parent_id="0" cargo_zone_import_cargo_type="boat_workbench" display_name="" is_sea_floor_object="false" show_zone_on_map="false" zone_type="0" zone_radius="2.5" dynamic_object_type="2" loot_type="0" character_outfit_category="11" character_type="1" character_special_outfit="0" vehicle_file_name="" vehicle_file_store="1" vehicle_is_static="false" vehicle_is_no_sleep="false" vehicle_is_editable="false" vehicle_is_show_on_map="false" vehicle_is_transponder_active="false" is_fire_lit="true" is_explosion="false" explosion_magnitude="1" flare_hue="0" is_flare_lit="true" vehicle_button_name="" ice_type="0" ice_scale="1" animal_type="0">
+						<spawn_transform 00="1" 01="0" 02="0" 03="0" 10="0" 11="1" 12="0" 13="0" 20="0" 21="0" 22="1" 23="0" 30="82.819077" 31="10.655207" 32="-80.441978" 33="1"/>
+						<spawn_bounds>
+							<min x="-5" y="-5" z="-5"/>
+							<max x="5" y="5" z="5"/>
+						</spawn_bounds>
+						<spawn_local_offset x="-0" y="-0" z="-0"/>
+					</c>
+					<c component_type="10" id="17" vehicle_parent_id="0" cargo_zone_import_cargo_type="boat_spawn" display_name="" is_sea_floor_object="false" show_zone_on_map="false" zone_type="0" zone_radius="2.5" dynamic_object_type="2" loot_type="0" character_outfit_category="11" character_type="1" character_special_outfit="0" vehicle_file_name="" vehicle_file_store="1" vehicle_is_static="false" vehicle_is_no_sleep="false" vehicle_is_editable="false" vehicle_is_show_on_map="false" vehicle_is_transponder_active="false" is_fire_lit="true" is_explosion="false" explosion_magnitude="1" flare_hue="0" is_flare_lit="true" vehicle_button_name="" ice_type="0" ice_scale="1" animal_type="0">
+						<spawn_transform 00="1" 01="0" 02="0" 03="0" 10="0" 11="1" 12="0" 13="0" 20="0" 21="0" 22="1" 23="0" 30="-1.888105" 31="4.999993" 32="-323.246582" 33="1"/>
+						<spawn_bounds>
+							<min x="-172.415385" y="-5" z="-5"/>
+							<max x="172.415385" y="5" z="5"/>
+						</spawn_bounds>
+						<spawn_local_offset x="-0" y="-0" z="-0"/>
+					</c>
+				</components>
+			</l>
+			<l id="4" tile="data/tiles/island_33_tile_32.xml" name="TERMINAL SPYCAKES" is_env_mod="true" env_mod_spawn_num="1">
+				<components>
+					<c component_type="10" id="4" vehicle_parent_id="0" cargo_zone_import_cargo_type="boat_workbench" display_name="" is_sea_floor_object="false" show_zone_on_map="false" zone_type="0" zone_radius="2.5" dynamic_object_type="2" loot_type="0" character_outfit_category="11" character_type="1" character_special_outfit="0" vehicle_file_name="" vehicle_file_store="1" vehicle_is_static="false" vehicle_is_no_sleep="false" vehicle_is_editable="false" vehicle_is_show_on_map="false" vehicle_is_transponder_active="false" is_fire_lit="true" is_explosion="false" explosion_magnitude="1" flare_hue="0" is_flare_lit="true" vehicle_button_name="" ice_type="0" ice_scale="1" animal_type="0">
+						<spawn_transform 00="1" 01="0" 02="0" 03="0" 10="0" 11="1" 12="0" 13="0" 20="0" 21="0" 22="1" 23="0" 30="122.354988" 31="10.167488" 32="194.206024" 33="1"/>
+						<spawn_bounds>
+							<min x="-5" y="-5" z="-5"/>
+							<max x="5" y="5" z="5"/>
+						</spawn_bounds>
+						<spawn_local_offset x="-0" y="-0" z="-0"/>
+					</c>
+					<c component_type="10" id="18" vehicle_parent_id="0" cargo_zone_import_cargo_type="boat_spawn" display_name="" is_sea_floor_object="false" show_zone_on_map="false" zone_type="0" zone_radius="2.5" dynamic_object_type="2" loot_type="0" character_outfit_category="11" character_type="1" character_special_outfit="0" vehicle_file_name="" vehicle_file_store="1" vehicle_is_static="false" vehicle_is_no_sleep="false" vehicle_is_editable="false" vehicle_is_show_on_map="false" vehicle_is_transponder_active="false" is_fire_lit="true" is_explosion="false" explosion_magnitude="1" flare_hue="0" is_flare_lit="true" vehicle_button_name="" ice_type="0" ice_scale="1" animal_type="0">
+						<spawn_transform 00="0.7892" 01="0" 02="0.614137" 03="0" 10="0" 11="1" 12="0" 13="0" 20="-0.614137" 21="0" 22="0.7892" 23="0" 30="-0.359969" 31="5.000006" 32="-24.011246" 33="1"/>
+						<spawn_bounds>
+							<min x="-5" y="-5" z="-120.288292"/>
+							<max x="5" y="5" z="120.288292"/>
+						</spawn_bounds>
+						<spawn_local_offset x="-0" y="-0" z="-0"/>
+					</c>
+				</components>
+			</l>
+			<l id="5" tile="data/tiles/island_33_tile_end.xml" name="TERMINAL CAMODO" is_env_mod="true" env_mod_spawn_num="1">
+				<components>
+					<c component_type="10" id="5" vehicle_parent_id="0" cargo_zone_import_cargo_type="boat_workbench" display_name="" is_sea_floor_object="false" show_zone_on_map="false" zone_type="0" zone_radius="2.5" dynamic_object_type="2" loot_type="0" character_outfit_category="11" character_type="1" character_special_outfit="0" vehicle_file_name="" vehicle_file_store="1" vehicle_is_static="false" vehicle_is_no_sleep="false" vehicle_is_editable="false" vehicle_is_show_on_map="false" vehicle_is_transponder_active="false" is_fire_lit="true" is_explosion="false" explosion_magnitude="1" flare_hue="0" is_flare_lit="true" vehicle_button_name="" ice_type="0" ice_scale="1" animal_type="0">
+						<spawn_transform 00="1" 01="0" 02="0" 03="0" 10="0" 11="1" 12="0" 13="0" 20="0" 21="0" 22="1" 23="0" 30="-136.561172" 31="10.360572" 32="32.574257" 33="1"/>
+						<spawn_bounds>
+							<min x="-5" y="-5" z="-5"/>
+							<max x="5" y="5" z="5"/>
+						</spawn_bounds>
+						<spawn_local_offset x="-0" y="-0" z="-0"/>
+					</c>
+					<c component_type="10" id="19" vehicle_parent_id="0" cargo_zone_import_cargo_type="boat_spawn" display_name="" is_sea_floor_object="false" show_zone_on_map="false" zone_type="0" zone_radius="2.5" dynamic_object_type="2" loot_type="0" character_outfit_category="11" character_type="1" character_special_outfit="0" vehicle_file_name="" vehicle_file_store="1" vehicle_is_static="false" vehicle_is_no_sleep="false" vehicle_is_editable="false" vehicle_is_show_on_map="false" vehicle_is_transponder_active="false" is_fire_lit="true" is_explosion="false" explosion_magnitude="1" flare_hue="0" is_flare_lit="true" vehicle_button_name="" ice_type="0" ice_scale="1" animal_type="0">
+						<spawn_transform 00="0.68176" 01="0" 02="0.731576" 03="0" 10="0" 11="1" 12="0" 13="0" 20="-0.731576" 21="0" 22="0.68176" 23="0" 30="-309.07196" 31="5.000001" 32="-114.803024" 33="1"/>
+						<spawn_bounds>
+							<min x="-5" y="-5" z="-179.014923"/>
+							<max x="5" y="5" z="179.014923"/>
+						</spawn_bounds>
+						<spawn_local_offset x="-0" y="-0" z="-0"/>
+					</c>
+				</components>
+			</l>
+			<l id="6" tile="data/tiles/island_29_playerbase_submarine.xml" name="CUSTOM BASE SUBMARINE" is_env_mod="true" env_mod_spawn_num="1">
+				<components>
+					<c component_type="10" id="6" vehicle_parent_id="0" cargo_zone_import_cargo_type="boat_workbench" display_name="" is_sea_floor_object="false" show_zone_on_map="false" zone_type="0" zone_radius="2.5" dynamic_object_type="2" loot_type="0" character_outfit_category="11" character_type="1" character_special_outfit="0" vehicle_file_name="" vehicle_file_store="1" vehicle_is_static="false" vehicle_is_no_sleep="false" vehicle_is_editable="false" vehicle_is_show_on_map="false" vehicle_is_transponder_active="false" is_fire_lit="true" is_explosion="false" explosion_magnitude="1" flare_hue="0" is_flare_lit="true" vehicle_button_name="" ice_type="0" ice_scale="1" animal_type="0">
+						<spawn_transform 00="1" 01="0" 02="0" 03="0" 10="0" 11="1" 12="0" 13="0" 20="0" 21="0" 22="1" 23="0" 30="10.986585" 31="7.626438" 32="43.011421" 33="1"/>
+						<spawn_bounds>
+							<min x="-5" y="-5" z="-5"/>
+							<max x="5" y="5" z="5"/>
+						</spawn_bounds>
+						<spawn_local_offset x="-0" y="-0" z="-0"/>
+					</c>
+					<c component_type="10" id="20" vehicle_parent_id="0" cargo_zone_import_cargo_type="boat_spawn" display_name="" is_sea_floor_object="false" show_zone_on_map="false" zone_type="0" zone_radius="2.5" dynamic_object_type="2" loot_type="0" character_outfit_category="11" character_type="1" character_special_outfit="0" vehicle_file_name="" vehicle_file_store="1" vehicle_is_static="false" vehicle_is_no_sleep="false" vehicle_is_editable="false" vehicle_is_show_on_map="false" vehicle_is_transponder_active="false" is_fire_lit="true" is_explosion="false" explosion_magnitude="1" flare_hue="0" is_flare_lit="true" vehicle_button_name="" ice_type="0" ice_scale="1" animal_type="0">
+						<spawn_transform 00="1" 01="0" 02="0" 03="0" 10="0" 11="1" 12="0" 13="0" 20="0" 21="0" 22="1" 23="0" 30="17.615475" 31="5.000004" 32="278.106018" 33="1"/>
+						<spawn_bounds>
+							<min x="-213.146654" y="-5" z="-5"/>
+							<max x="213.146654" y="5" z="5"/>
+						</spawn_bounds>
+						<spawn_local_offset x="-0" y="-0" z="-0"/>
+					</c>
+				</components>
+			</l>
+			<l id="7" tile="data/tiles/island_30_playerbase_boat.xml" name="CUSTOM BASE LARGE BOAT" is_env_mod="true" env_mod_spawn_num="1">
+				<components>
+					<c component_type="10" id="7" vehicle_parent_id="0" cargo_zone_import_cargo_type="boat_workbench" display_name="" is_sea_floor_object="false" show_zone_on_map="false" zone_type="0" zone_radius="2.5" dynamic_object_type="2" loot_type="0" character_outfit_category="11" character_type="1" character_special_outfit="0" vehicle_file_name="" vehicle_file_store="1" vehicle_is_static="false" vehicle_is_no_sleep="false" vehicle_is_editable="false" vehicle_is_show_on_map="false" vehicle_is_transponder_active="false" is_fire_lit="true" is_explosion="false" explosion_magnitude="1" flare_hue="0" is_flare_lit="true" vehicle_button_name="" ice_type="0" ice_scale="1" animal_type="0">
+						<spawn_transform 00="1" 01="0" 02="0" 03="0" 10="0" 11="1" 12="0" 13="0" 20="0" 21="0" 22="1" 23="0" 30="-18.469677" 31="8.603827" 32="-32.664139" 33="1"/>
+						<spawn_bounds>
+							<min x="-5" y="-5" z="-5"/>
+							<max x="5" y="5" z="5"/>
+						</spawn_bounds>
+						<spawn_local_offset x="-0" y="-0" z="-0"/>
+					</c>
+					<c component_type="10" id="21" vehicle_parent_id="0" cargo_zone_import_cargo_type="boat_spawn" display_name="" is_sea_floor_object="false" show_zone_on_map="false" zone_type="0" zone_radius="2.5" dynamic_object_type="2" loot_type="0" character_outfit_category="11" character_type="1" character_special_outfit="0" vehicle_file_name="" vehicle_file_store="1" vehicle_is_static="false" vehicle_is_no_sleep="false" vehicle_is_editable="false" vehicle_is_show_on_map="false" vehicle_is_transponder_active="false" is_fire_lit="true" is_explosion="false" explosion_magnitude="1" flare_hue="0" is_flare_lit="true" vehicle_button_name="" ice_type="0" ice_scale="1" animal_type="0">
+						<spawn_transform 00="1" 01="0" 02="0" 03="0" 10="0" 11="1" 12="0" 13="0" 20="0" 21="0" 22="1" 23="0" 30="-38.631626" 31="5.000003" 32="-170.477722" 33="1"/>
+						<spawn_bounds>
+							<min x="-129.927041" y="-5" z="-5"/>
+							<max x="129.927041" y="5" z="5"/>
+						</spawn_bounds>
+						<spawn_local_offset x="-0" y="-0" z="-0"/>
+					</c>
+				</components>
+			</l>
+			<l id="8" tile="data/tiles/island_31_playerbase_combo.xml" name="CUSTOM BASE SMALL BOAT" is_env_mod="true" env_mod_spawn_num="1">
+				<components>
+					<c component_type="10" id="8" vehicle_parent_id="0" cargo_zone_import_cargo_type="boat_workbench" display_name="" is_sea_floor_object="false" show_zone_on_map="false" zone_type="0" zone_radius="2.5" dynamic_object_type="2" loot_type="0" character_outfit_category="11" character_type="1" character_special_outfit="0" vehicle_file_name="" vehicle_file_store="1" vehicle_is_static="false" vehicle_is_no_sleep="false" vehicle_is_editable="false" vehicle_is_show_on_map="false" vehicle_is_transponder_active="false" is_fire_lit="true" is_explosion="false" explosion_magnitude="1" flare_hue="0" is_flare_lit="true" vehicle_button_name="" ice_type="0" ice_scale="1" animal_type="0">
+						<spawn_transform 00="1" 01="0" 02="0" 03="0" 10="0" 11="1" 12="0" 13="0" 20="0" 21="0" 22="1" 23="0" 30="8.829652" 31="7.891654" 32="14.848902" 33="1"/>
+						<spawn_bounds>
+							<min x="-5" y="-5" z="-5"/>
+							<max x="5" y="5" z="5"/>
+						</spawn_bounds>
+						<spawn_local_offset x="-0" y="-0" z="-0"/>
+					</c>
+					<c component_type="10" id="9" vehicle_parent_id="0" cargo_zone_import_cargo_type="boat_workbench" display_name="" is_sea_floor_object="false" show_zone_on_map="false" zone_type="0" zone_radius="2.5" dynamic_object_type="2" loot_type="0" character_outfit_category="11" character_type="1" character_special_outfit="0" vehicle_file_name="" vehicle_file_store="1" vehicle_is_static="false" vehicle_is_no_sleep="false" vehicle_is_editable="false" vehicle_is_show_on_map="false" vehicle_is_transponder_active="false" is_fire_lit="true" is_explosion="false" explosion_magnitude="1" flare_hue="0" is_flare_lit="true" vehicle_button_name="" ice_type="0" ice_scale="1" animal_type="0">
+						<spawn_transform 00="1" 01="0" 02="0" 03="0" 10="0" 11="1" 12="0" 13="0" 20="0" 21="0" 22="1" 23="0" 30="2.067894" 31="6.095446" 32="-8.916829" 33="1"/>
+						<spawn_bounds>
+							<min x="-5" y="-5" z="-5"/>
+							<max x="5" y="5" z="5"/>
+						</spawn_bounds>
+						<spawn_local_offset x="-0" y="-0" z="-0"/>
+					</c>
+					<c component_type="10" id="22" vehicle_parent_id="0" cargo_zone_import_cargo_type="boat_spawn" display_name="" is_sea_floor_object="false" show_zone_on_map="false" zone_type="0" zone_radius="2.5" dynamic_object_type="2" loot_type="0" character_outfit_category="11" character_type="1" character_special_outfit="0" vehicle_file_name="" vehicle_file_store="1" vehicle_is_static="false" vehicle_is_no_sleep="false" vehicle_is_editable="false" vehicle_is_show_on_map="false" vehicle_is_transponder_active="false" is_fire_lit="true" is_explosion="false" explosion_magnitude="1" flare_hue="0" is_flare_lit="true" vehicle_button_name="" ice_type="0" ice_scale="1" animal_type="0">
+						<spawn_transform 00="1" 01="0" 02="0" 03="0" 10="0" 11="1" 12="0" 13="0" 20="0" 21="0" 22="1" 23="0" 30="147.344925" 31="5.000001" 32="13.08603" 33="1"/>
+						<spawn_bounds>
+							<min x="-5" y="-5" z="-86.921993"/>
+							<max x="5" y="5" z="86.921993"/>
+						</spawn_bounds>
+						<spawn_local_offset x="-0" y="-0" z="-0"/>
+					</c>
+				</components>
+			</l>
+			<l id="9" tile="data/tiles/arctic_island_playerbase.xml" name="ARCTIC ISLAND BASE" is_env_mod="true" env_mod_spawn_num="1">
+				<components>
+					<c component_type="10" id="10" vehicle_parent_id="0" cargo_zone_import_cargo_type="boat_workbench" display_name="" is_sea_floor_object="false" show_zone_on_map="false" zone_type="0" zone_radius="2.5" dynamic_object_type="2" loot_type="0" character_outfit_category="11" character_type="1" character_special_outfit="0" vehicle_file_name="" vehicle_file_store="1" vehicle_is_static="false" vehicle_is_no_sleep="false" vehicle_is_editable="false" vehicle_is_show_on_map="false" vehicle_is_transponder_active="false" is_fire_lit="true" is_explosion="false" explosion_magnitude="1" flare_hue="0" is_flare_lit="true" vehicle_button_name="" ice_type="0" ice_scale="1" animal_type="0">
+						<spawn_transform 00="1" 01="0" 02="0" 03="0" 10="0" 11="1" 12="0" 13="0" 20="0" 21="0" 22="1" 23="0" 30="225.014282" 31="12.500257" 32="262.038788" 33="1"/>
+						<spawn_bounds>
+							<min x="-5" y="-5" z="-5"/>
+							<max x="5" y="5" z="5"/>
+						</spawn_bounds>
+						<spawn_local_offset x="-0" y="-0" z="-0"/>
+					</c>
+					<c component_type="10" id="23" vehicle_parent_id="0" cargo_zone_import_cargo_type="boat_spawn" display_name="" is_sea_floor_object="false" show_zone_on_map="false" zone_type="0" zone_radius="2.5" dynamic_object_type="2" loot_type="0" character_outfit_category="11" character_type="1" character_special_outfit="0" vehicle_file_name="" vehicle_file_store="1" vehicle_is_static="false" vehicle_is_no_sleep="false" vehicle_is_editable="false" vehicle_is_show_on_map="false" vehicle_is_transponder_active="false" is_fire_lit="true" is_explosion="false" explosion_magnitude="1" flare_hue="0" is_flare_lit="true" vehicle_button_name="" ice_type="0" ice_scale="1" animal_type="0">
+						<spawn_transform 00="0.65515" 01="0" 02="0.755499" 03="0" 10="0" 11="1" 12="0" 13="0" 20="-0.755499" 21="0" 22="0.65515" 23="0" 30="431.965393" 31="5" 32="437.37326" 33="1"/>
+						<spawn_bounds>
+							<min x="-5" y="-5" z="-94.881989"/>
+							<max x="5" y="5" z="94.881989"/>
+						</spawn_bounds>
+						<spawn_local_offset x="-0" y="-0" z="-0"/>
+					</c>
+				</components>
+			</l>
+			<l id="10" tile="data/tiles/island_43_multiplayer_base.xml" name="MULTIPLAYER ISLAND BASE" is_env_mod="true" env_mod_spawn_num="1">
+				<components>
+					<c component_type="10" id="11" vehicle_parent_id="0" cargo_zone_import_cargo_type="boat_workbench" display_name="" is_sea_floor_object="false" show_zone_on_map="false" zone_type="0" zone_radius="2.5" dynamic_object_type="2" loot_type="0" character_outfit_category="11" character_type="1" character_special_outfit="0" vehicle_file_name="" vehicle_file_store="1" vehicle_is_static="false" vehicle_is_no_sleep="false" vehicle_is_editable="false" vehicle_is_show_on_map="false" vehicle_is_transponder_active="false" is_fire_lit="true" is_explosion="false" explosion_magnitude="1" flare_hue="0" is_flare_lit="true" vehicle_button_name="" ice_type="0" ice_scale="1" animal_type="0">
+						<spawn_transform 00="1" 01="0" 02="0" 03="0" 10="0" 11="1" 12="0" 13="0" 20="0" 21="0" 22="1" 23="0" 30="387.505371" 31="12.35" 32="-139.448654" 33="1"/>
+						<spawn_bounds>
+							<min x="-5" y="-5" z="-5"/>
+							<max x="5" y="5" z="5"/>
+						</spawn_bounds>
+						<spawn_local_offset x="-0" y="-0" z="-0"/>
+					</c>
+					<c component_type="10" id="12" vehicle_parent_id="0" cargo_zone_import_cargo_type="boat_workbench" display_name="" is_sea_floor_object="false" show_zone_on_map="false" zone_type="0" zone_radius="2.5" dynamic_object_type="2" loot_type="0" character_outfit_category="11" character_type="1" character_special_outfit="0" vehicle_file_name="" vehicle_file_store="1" vehicle_is_static="false" vehicle_is_no_sleep="false" vehicle_is_editable="false" vehicle_is_show_on_map="false" vehicle_is_transponder_active="false" is_fire_lit="true" is_explosion="false" explosion_magnitude="1" flare_hue="0" is_flare_lit="true" vehicle_button_name="" ice_type="0" ice_scale="1" animal_type="0">
+						<spawn_transform 00="1" 01="0" 02="0" 03="0" 10="0" 11="1" 12="0" 13="0" 20="0" 21="0" 22="1" 23="0" 30="388.700256" 31="12.35" 32="-165.243027" 33="1"/>
+						<spawn_bounds>
+							<min x="-5" y="-5" z="-5"/>
+							<max x="5" y="5" z="5"/>
+						</spawn_bounds>
+						<spawn_local_offset x="-0" y="-0" z="-0"/>
+					</c>
+					<c component_type="10" id="24" vehicle_parent_id="0" cargo_zone_import_cargo_type="boat_spawn" display_name="" is_sea_floor_object="false" show_zone_on_map="false" zone_type="0" zone_radius="2.5" dynamic_object_type="2" loot_type="0" character_outfit_category="11" character_type="1" character_special_outfit="0" vehicle_file_name="" vehicle_file_store="1" vehicle_is_static="false" vehicle_is_no_sleep="false" vehicle_is_editable="false" vehicle_is_show_on_map="false" vehicle_is_transponder_active="false" is_fire_lit="true" is_explosion="false" explosion_magnitude="1" flare_hue="0" is_flare_lit="true" vehicle_button_name="" ice_type="0" ice_scale="1" animal_type="0">
+						<spawn_transform 00="0.993572" 01="0" 02="-0.113203" 03="0" 10="0" 11="1" 12="0" 13="0" 20="0.113203" 21="0" 22="0.993572" 23="0" 30="558.554382" 31="5.00001" 32="-164.384354" 33="1"/>
+						<spawn_bounds>
+							<min x="-5" y="-5" z="-92.81669"/>
+							<max x="5" y="5" z="92.81669"/>
+						</spawn_bounds>
+						<spawn_local_offset x="-0" y="-0" z="-0"/>
+					</c>
+				</components>
+			</l>
+			<l id="11" tile="data/tiles/mega_island_15_2.xml" name="SAWYER ISLANDS' SOUTH-EAST FISHING VILLAGE" is_env_mod="true" env_mod_spawn_num="1">
+				<components>
+					<c component_type="10" id="13" vehicle_parent_id="0" cargo_zone_import_cargo_type="boat_workbench" display_name="" is_sea_floor_object="false" show_zone_on_map="false" zone_type="0" zone_radius="2.5" dynamic_object_type="2" loot_type="0" character_outfit_category="11" character_type="1" character_special_outfit="0" vehicle_file_name="" vehicle_file_store="1" vehicle_is_static="false" vehicle_is_no_sleep="false" vehicle_is_editable="false" vehicle_is_show_on_map="false" vehicle_is_transponder_active="false" is_fire_lit="true" is_explosion="false" explosion_magnitude="1" flare_hue="0" is_flare_lit="true" vehicle_button_name="" ice_type="0" ice_scale="1" animal_type="0">
+						<spawn_transform 00="1" 01="0" 02="0" 03="0" 10="0" 11="1" 12="0" 13="0" 20="0" 21="0" 22="1" 23="0" 30="171.197739" 31="11.637036" 32="-400.724487" 33="1"/>
+						<spawn_bounds>
+							<min x="-5" y="-5" z="-5"/>
+							<max x="5" y="5" z="5"/>
+						</spawn_bounds>
+						<spawn_local_offset x="-0" y="-0" z="-0"/>
+					</c>
+					<c component_type="10" id="25" vehicle_parent_id="0" cargo_zone_import_cargo_type="boat_spawn" display_name="" is_sea_floor_object="false" show_zone_on_map="false" zone_type="0" zone_radius="2.5" dynamic_object_type="2" loot_type="0" character_outfit_category="11" character_type="1" character_special_outfit="0" vehicle_file_name="" vehicle_file_store="1" vehicle_is_static="false" vehicle_is_no_sleep="false" vehicle_is_editable="false" vehicle_is_show_on_map="false" vehicle_is_transponder_active="false" is_fire_lit="true" is_explosion="false" explosion_magnitude="1" flare_hue="0" is_flare_lit="true" vehicle_button_name="" ice_type="0" ice_scale="1" animal_type="0">
+						<spawn_transform 00="1" 01="0" 02="0" 03="0" 10="0" 11="1" 12="0" 13="0" 20="0" 21="0" 22="1" 23="0" 30="148.805359" 31="4.999991" 32="-609.241333" 33="1"/>
+						<spawn_bounds>
+							<min x="-93.963581" y="-5" z="-5"/>
+							<max x="93.963581" y="5" z="5"/>
+						</spawn_bounds>
+						<spawn_local_offset x="-0" y="-0" z="-0"/>
+					</c>
+				</components>
+			</l>
+			<l id="13" tile="data/tiles/mega_island_9_8.xml" name="SAWYER ISLANDS' NORTH HARBOUR" is_env_mod="true" env_mod_spawn_num="1">
+				<components>
+					<c component_type="10" id="14" vehicle_parent_id="0" cargo_zone_import_cargo_type="boat_workbench" display_name="" is_sea_floor_object="false" show_zone_on_map="false" zone_type="0" zone_radius="2.5" dynamic_object_type="2" loot_type="0" character_outfit_category="11" character_type="1" character_special_outfit="0" vehicle_file_name="" vehicle_file_store="1" vehicle_is_static="false" vehicle_is_no_sleep="false" vehicle_is_editable="false" vehicle_is_show_on_map="false" vehicle_is_transponder_active="false" is_fire_lit="true" is_explosion="false" explosion_magnitude="1" flare_hue="0" is_flare_lit="true" vehicle_button_name="" ice_type="0" ice_scale="1" animal_type="0">
+						<spawn_transform 00="1" 01="0" 02="0" 03="0" 10="0" 11="1" 12="0" 13="0" 20="0" 21="0" 22="1" 23="0" 30="295.541046" 31="8.630022" 32="412.226563" 33="1"/>
+						<spawn_bounds>
+							<min x="-5" y="-5" z="-5"/>
+							<max x="5" y="5" z="5"/>
+						</spawn_bounds>
+						<spawn_local_offset x="-0" y="-0" z="-0"/>
+					</c>
+					<c component_type="10" id="26" vehicle_parent_id="0" cargo_zone_import_cargo_type="boat_spawn" display_name="" is_sea_floor_object="false" show_zone_on_map="false" zone_type="0" zone_radius="2.5" dynamic_object_type="2" loot_type="0" character_outfit_category="11" character_type="1" character_special_outfit="0" vehicle_file_name="" vehicle_file_store="1" vehicle_is_static="false" vehicle_is_no_sleep="false" vehicle_is_editable="false" vehicle_is_show_on_map="false" vehicle_is_transponder_active="false" is_fire_lit="true" is_explosion="false" explosion_magnitude="1" flare_hue="0" is_flare_lit="true" vehicle_button_name="" ice_type="0" ice_scale="1" animal_type="0">
+						<spawn_transform 00="1" 01="0" 02="0" 03="0" 10="0" 11="1" 12="0" 13="0" 20="0" 21="0" 22="1" 23="0" 30="358.573059" 31="5" 32="568.112" 33="1"/>
+						<spawn_bounds>
+							<min x="-41.690343" y="-5" z="-5"/>
+							<max x="41.690343" y="5" z="5"/>
+						</spawn_bounds>
+						<spawn_local_offset x="-0" y="-0" z="-0"/>
+					</c>
+				</components>
+			</l>
+		</locations>
+	</locations>
+</playlist>
+
