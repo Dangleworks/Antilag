@@ -28,16 +28,16 @@ function onCreate(is_world_create)
         g_savedata.nitro_vehicle_limit = 5
     end
     if g_savedata.antilag.max_mass == nil then
-        g_savedata.antilag.max_mass = 25000
+        g_savedata.antilag.max_mass = 70000
     end
     if g_savedata.antilag.tps_threshold == nil then
-        g_savedata.antilag.tps_threshold = 55
+        g_savedata.antilag.tps_threshold = 50
     end
     if g_savedata.antilag.load_time_threshold == nil then
         g_savedata.antilag.load_time_threshold = 3000
     end
     if g_savedata.antilag.tps_recover_time == nil then
-        g_savedata.antilag.tps_recover_time = 3000
+        g_savedata.antilag.tps_recover_time = 4000
     end
     if g_savedata.auto_despawn_vehicle_limit == nil then
         g_savedata.auto_despawn_vehicle_limit = true
@@ -109,7 +109,6 @@ function onVehicleSpawn(vehicle_id, peer_id, x, y, z, cost)
     if tableLength(vehicles) >= g_savedata.vehicle_limits[owner_sid] then
         -- vehicle count exceeded
         if g_savedata.auto_despawn_vehicle_limit then
-            -- TODO: Ensure onDespawn removes vehicle from this list
             -- TODO: Wait until new vehicle loads before despawning the last vehicle in case it's invalid for another reason
             -- despawn oldest vehicle
             local msg = "Your vehicle with ID %d has been despawned to allow ID %d to spawn."
