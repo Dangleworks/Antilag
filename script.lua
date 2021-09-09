@@ -18,6 +18,9 @@ function onCreate(is_world_create)
     if g_savedata.antilag == nil then
         g_savedata.antilag = {}
     end
+	if g_savedata.admin_vehicle_limit == nil then
+		g_savedata.admin_vehicle_limit = 999
+	end
     if g_savedata.base_vehicle_limit == nil then
         g_savedata.base_vehicle_limit = 1
     end
@@ -60,6 +63,10 @@ end
 function onPlayerJoin(steam_id, name, peer_id, admin, auth)
     steam_ids[peer_id] = tostring(steam_id)
     peer_ids[tostring(steam_id)] = peer_id
+	if admin then
+		g_savedata.vehicle_limits[steam_id] = g_savedata.admin_vehicle_limit
+		return
+	end
     server.httpGet(verify_port, "/check?sid="..steam_id)
 end
 
