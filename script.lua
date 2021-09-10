@@ -119,7 +119,7 @@ function onVehicleSpawn(vehicle_id, peer_id, x, y, z, cost)
     if tableLength(vehicles) >= g_savedata.vehicle_limits[owner_sid] then
         local bypass = false
         -- if player is an admin, and admin bypass is enabled
-        logError("isAdmin "..peer_id..tostring(isAdmin(peer_id)))
+        logError("isAdmin "..peer_id.." "..tostring(isAdmin(peer_id)))
         logError("admin_bypass "..tostring(g_savedata.antilag.admin_bypass_vehicle_limit))
         if isAdmin(peer_id) and g_savedata.antilag.admin_bypass_vehicle_limit then
             bypass = true
@@ -426,9 +426,10 @@ function Mean(T)
 end
 
 function isAdmin(peer_id)
-    for _, player in pairs(server.getPlayers()) do
+    local players = server.getPlayers()
+    for _, player in pairs(players) do
         if player.id == peer_id then
-            return player.is_admin
+            return player.admin
         end
     end
     return false
