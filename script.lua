@@ -13,6 +13,7 @@ tps_uiid = 0
 vehicle_uiid = 0
 ticks_time = 0
 ticks = 0
+tps_buff = {}
 
 function onCreate(is_world_create)
     if g_savedata.antilag == nil then
@@ -57,6 +58,7 @@ function onCreate(is_world_create)
 
     tps_uiid = server.getMapID()
     vehicle_uiid = server.getMapID()
+    tps_buff = NewBuffer(g_savedata.antilag.tps_recover_time/500)
 
     for _, player in pairs(server.getPlayers()) do
 		steam_ids[player.id] = tostring(player.steam_id)
@@ -145,7 +147,7 @@ function onVehicleSpawn(vehicle_id, peer_id, x, y, z, cost)
     end
     -- TODO: Check if another vehicle is already in the spawn zone
     -- Start tracking vehicle
-    table.insert(g_savedata.user_vehicles[owner_sid], {vehicle_id=vehicle_id, vehicle_name="Unknown", spawn_time=server.getTimeMillisec(), spawn_tps=tps, loaded=false, cleared=false})
+    table.insert(g_savedata.user_vehicles[owner_sid], {vehicle_id=vehicle_id, vehicle_name="Unknown", spawn_time=server.getTimeMillisec(), spawn_tps=Mean(tps_buff.values), loaded=false, cleared=false})
 end
 
 function onVehicleLoad(vehicle_id)
@@ -222,9 +224,10 @@ function onTick(game_ticks)
             else
                 if not vehicle.cleared then
                     if current_time - vehicle.spawn_time > g_savedata.antilag.tps_recover_time then
-                        -- if tps drop since spawn is > tps - antilag threshold
-                        if (vehicle.spawn_tps - tps) > (tps - g_savedata.antilag.tps_threshold) then
-                            local msg = string.format("Vehicle %d was despawned. Server FPS was lowered from %d to %d", vehicle.vehicle_id, vehicle.spawn_tps, tps)
+                        -- if average tps drop since spawn is > average tps - antilag threshold
+                        local avg = Mean(tps_buff.values)
+                        if (vehicle.spawn_tps - avg) > (avg - g_savedata.antilag.tps_threshold) then
+                            local msg = string.format("Vehicle %d was despawned. Average server FPS was lowered from %d to %d", vehicle.vehicle_id, vehicle.spawn_tps, tps)
                             server.notify(peer_ids[steam_id], antilag_notify, msg, 6)
                             server.despawnVehicle(vehicle.vehicle_id, true)
                         -- clear vehicle if it's past the TPS recover window and TPS did in fact recover
@@ -247,7 +250,11 @@ function onTick(game_ticks)
         if vehicles == nil then
             vehicles = {}
         end
-        server.setPopupScreen(player.id, vehicle_uiid, "Vehicles", true, string.format("Vehicles: %d/%d", #vehicles, max), 0.4, 0.88)
+        if g_savedata.antilag.disable_vehicle_limit then
+            server.setPopupScreen(player.id, vehicle_uiid, "Vehicles", true, string.format("Vehicles: %d", #vehicles, max), 0.4, 0.88)
+        else
+            server.setPopupScreen(player.id, vehicle_uiid, "Vehicles", true, string.format("Vehicles: %d/%d", #vehicles, max), 0.4, 0.88)
+        end
     end
 end
 
@@ -298,6 +305,8 @@ function handleAntilagCommand(full_message, user_peer_id, is_admin, is_auth, com
                     end
                     local old = g_savedata.antilag.tps_recover_time
                     g_savedata.antilag.tps_recover_time = new
+                    -- make sure to update the buffer size to account for new averaging time
+                    tps_buff = NewBuffer(g_savedata.antilag.tps_recover_time/500)
                     server.announce(h, string.format("TPS Recovery time changed from %d to %d", old, new), user_peer_id)
                     return
                 end
@@ -371,10 +380,46 @@ function calculateTPS()
         tps = ticks*2
         ticks = 0
         ticks_time = server.getTimeMillisec()
+        tps_buff.Push(tps)
         for _, p in pairs(server.getPlayers()) do
             server.setPopupScreen(p.id, tps_uiid, "FPS", true, "FPS: ".. tps, 0.56, 0.88)
         end
     end
+end
+
+function NewBuffer(maxlen)
+    local buffer = {}
+    buffer.maxlen = maxlen
+    buffer.values = {}
+
+    function buffer.Push(item)
+        table.insert(buffer.values, 1, item)
+        buffer.values[buffer.maxlen + 1] = nil
+    end
+
+    function buffer.PrintAll()
+        data = ""
+        for i, v in pairs(buffer.values) do
+            data = data .. v
+            if i < #buffer.values then data = data .. "," end
+        end
+
+        print(data)
+    end
+    return buffer
+end
+
+function Mean(T)
+    local sum = 0
+    local count = 0
+    if T == nil then return 0 end
+    for k, v in pairs(T) do
+        if type(v) == 'number' then
+            sum = sum + v
+            count = count + 1
+        end
+    end
+    return (sum / count)
 end
 
 function isAdmin(peer_id)
