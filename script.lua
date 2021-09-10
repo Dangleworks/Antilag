@@ -18,9 +18,6 @@ function onCreate(is_world_create)
     if g_savedata.antilag == nil then
         g_savedata.antilag = {}
     end
-	if g_savedata.admin_vehicle_limit == nil then
-		g_savedata.admin_vehicle_limit = 999
-	end
     if g_savedata.base_vehicle_limit == nil then
         g_savedata.base_vehicle_limit = 1
     end
@@ -51,6 +48,13 @@ function onCreate(is_world_create)
     if g_savedata.user_vehicles == nil then
         g_savedata.user_vehicles = {}
     end
+    if g_savedata.antilag.admin_bypass_vehicle_limit == nil then
+        g_savedata.antilag.admin_bypass_vehicle_limit = false
+    end
+    if g_savedata.antilag.disable_vehicle_limit == nil then
+        g_savedata.antilag.disable_vehicle_limit = false
+    end
+
     tps_uiid = server.getMapID()
     vehicle_uiid = server.getMapID()
 
@@ -63,10 +67,6 @@ end
 function onPlayerJoin(steam_id, name, peer_id, admin, auth)
     steam_ids[peer_id] = tostring(steam_id)
     peer_ids[tostring(steam_id)] = peer_id
-	if admin then
-		g_savedata.vehicle_limits[steam_id] = g_savedata.admin_vehicle_limit
-		return
-	end
     server.httpGet(verify_port, "/check?sid="..steam_id)
 end
 
@@ -113,23 +113,34 @@ function onVehicleSpawn(vehicle_id, peer_id, x, y, z, cost)
     local vehicles = g_savedata.user_vehicles[owner_sid]
 
     -- Vehicle limit logic
+    -- vehicle count exceeded
     if tableLength(vehicles) >= g_savedata.vehicle_limits[owner_sid] then
-        -- vehicle count exceeded
-        if g_savedata.auto_despawn_vehicle_limit then
-            -- TODO: Wait until new vehicle loads before despawning the last vehicle in case it's invalid for another reason
-            -- despawn oldest vehicle
-            local msg = "Your vehicle with ID %d has been despawned to allow ID %d to spawn."
-            server.notify(peer_id, vehicle_limit_notify, string.format(msg, vehicles[1].vehicle_id, vehicle_id), 6)
-            server.despawnVehicle(vehicles[1].vehicle_id, true)
-        else
-            server.despawnVehicle(vehicle_id, true)
-            server.notify(peer_id, vehicle_limit_notify, "Your vehicle was not spawned", 6)
-            local msg = string.format(
-                "You have reached your maxmimum spawned vehicle limit of %d. Please run the ?c command to clean up your old vehicles.",
-                g_savedata.vehicle_limits[owner_sid])
-            server.announce(vehicle_limit_chat, msg, peer_id)
-            -- return here because the vehicle was not spawned
-            return
+        local bypass = false
+        -- if player is an admin, and admin bypass is enabled
+        if isAdmin(peer_id) and g_savedata.antilag.admin_bypass_vehicle_limit then
+            bypass = true
+        end
+        if g_savedata.antilag.disable_vehicle_limit then
+            bypass = true
+        end
+
+        if not bypass then
+            if g_savedata.auto_despawn_vehicle_limit then
+                -- TODO: Wait until new vehicle loads before despawning the last vehicle in case it's invalid for another reason
+                -- despawn oldest vehicle
+                local msg = "Your vehicle with ID %d has been despawned to allow ID %d to spawn."
+                server.notify(peer_id, vehicle_limit_notify, string.format(msg, vehicles[1].vehicle_id, vehicle_id), 6)
+                server.despawnVehicle(vehicles[1].vehicle_id, true)
+            else
+                server.despawnVehicle(vehicle_id, true)
+                server.notify(peer_id, vehicle_limit_notify, "Your vehicle was not spawned", 6)
+                local msg = string.format(
+                    "You have reached your maxmimum spawned vehicle limit of %d. Please run the ?c command to clean up your old vehicles.",
+                    g_savedata.vehicle_limits[owner_sid])
+                server.announce(vehicle_limit_chat, msg, peer_id)
+                -- return here because the vehicle was not spawned
+                return
+            end
         end
     end
     -- TODO: Check if another vehicle is already in the spawn zone
@@ -303,6 +314,44 @@ function handleAntilagCommand(full_message, user_peer_id, is_admin, is_auth, com
                     end
                     g_savedata.antilag.auto_despawn_vehicle_limit = new
                     server.announce(h, string.format("Auto despawn vehicle limit changed from %s to %s", old, new), user_peer_id)
+                    return
+                end
+                if args[2] == "admin_bypass_vehicle_limit" or args[2] == "admin_bypass" then
+                    local new = args[3]
+                    if new == nil then
+                        server.announce(h, string.format("Invalid value %s", args[3]), user_peer_id)
+                        return
+                    end
+                    if string.match(new, "^[yYtT]") then
+                        new = true
+                    elseif string.match(new, "^[nNfF]") then
+                        new = false
+                    else
+                        server.announce(h, string.format("Invalid value %s - must be true or false", args[3]), user_peer_id)
+                        return
+                    end
+                    local old = g_savedata.antilag.admin_bypass_vehicle_limit
+                    g_savedata.antilag.admin_bypass_vehicle_limit = new
+                    server.announce(h, string.format("Admin vehicle limit bypass changed from %s to %s", tostring(old), tostring(new)), user_peer_id)
+                    return
+                end
+                if args[2] == "disable_vehicle_limit" then
+                    local new = args[3]
+                    if new == nil then
+                        server.announce(h, string.format("Invalid value %s", args[3]), user_peer_id)
+                        return
+                    end
+                    if string.match(new, "^[yYtT]") then
+                        new = true
+                    elseif string.match(new, "^[nNfF]") then
+                        new = false
+                    else
+                        server.announce(h, string.format("Invalid value %s - must be true or false", args[3]), user_peer_id)
+                        return
+                    end
+                    local old = g_savedata.antilag.disable_vehicle_limit
+                    g_savedata.antilag.disable_vehicle_limit = new
+                    server.announce(h, string.format("Vehicle limit disable changed from %s to %s", tostring(old), tostring(new)), user_peer_id)
                     return
                 end
             end
