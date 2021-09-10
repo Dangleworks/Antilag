@@ -119,9 +119,12 @@ function onVehicleSpawn(vehicle_id, peer_id, x, y, z, cost)
     if tableLength(vehicles) >= g_savedata.vehicle_limits[owner_sid] then
         local bypass = false
         -- if player is an admin, and admin bypass is enabled
+        logError("isAdmin "..peer_id..isAdmin(peer_id))
+        logError("admin_bypass "..tostring(g_savedata.antilag.admin_bypass_vehicle_limit))
         if isAdmin(peer_id) and g_savedata.antilag.admin_bypass_vehicle_limit then
             bypass = true
         end
+        logError("Bypass = "..tostring(bypass))
         if g_savedata.antilag.disable_vehicle_limit then
             bypass = true
         end
@@ -227,7 +230,7 @@ function onTick(game_ticks)
                         -- if average tps drop since spawn is > average tps - antilag threshold
                         local avg = Mean(tps_buff.values)
                         if (vehicle.spawn_tps - avg) > (avg - g_savedata.antilag.tps_threshold) then
-                            local msg = string.format("Vehicle %d was despawned. Average server FPS was lowered from %d to %d", vehicle.vehicle_id, vehicle.spawn_tps, tps)
+                            local msg = string.format("Vehicle %d was despawned. Average server FPS was lowered from %d to %d", vehicle.vehicle_id, vehicle.spawn_tps, avg)
                             server.notify(peer_ids[steam_id], antilag_notify, msg, 6)
                             server.despawnVehicle(vehicle.vehicle_id, true)
                         -- clear vehicle if it's past the TPS recover window and TPS did in fact recover
