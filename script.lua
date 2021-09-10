@@ -227,7 +227,7 @@ function onTick(game_ticks)
                         -- if average tps drop since spawn is > average tps - antilag threshold
                         local avg = Mean(tps_buff.values)
                         if (vehicle.spawn_tps - avg) > (avg - g_savedata.antilag.tps_threshold) then
-                            local msg = string.format("Vehicle %d was despawned. Average server FPS was lowered from %d to %d", vehicle.vehicle_id, vehicle.spawn_tps, avg)
+                            local msg = string.format("Vehicle %d was despawned. Average server FPS was lowered from %0.2f to %0.2f", vehicle.vehicle_id, vehicle.spawn_tps, avg)
                             server.notify(peer_ids[steam_id], antilag_notify, msg, 6)
                             server.despawnVehicle(vehicle.vehicle_id, true)
                         -- clear vehicle if it's past the TPS recover window and TPS did in fact recover
