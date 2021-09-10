@@ -366,7 +366,7 @@ function handleAntilagCommand(full_message, user_peer_id, is_admin, is_auth, com
             end
             if #args == 1 and args[1] == "config" then
                 for k, v in pairs(g_savedata.antilag) do
-                    server.announce(h, k..": "..v, user_peer_id)
+                    server.announce(h, k..": "..tostring(v), user_peer_id)
                 end
             end
         end
