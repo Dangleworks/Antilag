@@ -265,7 +265,7 @@ function onTick(game_ticks)
         local sid = tostring(player.steam_id)
         local max = g_savedata.vehicle_limits[sid]
         if max == nil then
-            max = g_savedata.base_vehicle_limit
+            max = g_savedata.antilag.base_vehicle_limit
         end
         local vehicles = g_savedata.user_vehicles[sid]
         if vehicles == nil then
