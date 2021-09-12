@@ -19,14 +19,14 @@ function onCreate(is_world_create)
     if g_savedata.antilag == nil then
         g_savedata.antilag = {}
     end
-    if g_savedata.base_vehicle_limit == nil then
-        g_savedata.base_vehicle_limit = 1
+    if g_savedata.antilag.base_vehicle_limit == nil then
+        g_savedata.antilag.base_vehicle_limit = 1
     end
-    if g_savedata.auth_vehicle_limit == nil then
-        g_savedata.auth_vehicle_limit = 3
+    if g_savedata.antilag.auth_vehicle_limit == nil then
+        g_savedata.antilag.auth_vehicle_limit = 3
     end
-    if g_savedata.nitro_vehicle_limit == nil then
-        g_savedata.nitro_vehicle_limit = 5
+    if g_savedata.antilag.nitro_vehicle_limit == nil then
+        g_savedata.antilag.nitro_vehicle_limit = 5
     end
     if g_savedata.antilag.max_mass == nil then
         g_savedata.antilag.max_mass = 70000
@@ -40,8 +40,8 @@ function onCreate(is_world_create)
     if g_savedata.antilag.tps_recover_time == nil then
         g_savedata.antilag.tps_recover_time = 4000
     end
-    if g_savedata.auto_despawn_vehicle_limit == nil then
-        g_savedata.auto_despawn_vehicle_limit = true
+    if g_savedata.antilag.auto_despawn_vehicle_limit == nil then
+        g_savedata.antilag.auto_despawn_vehicle_limit = true
     end
     if g_savedata.vehicle_limits == nil then
         g_savedata.vehicle_limits = {}
@@ -54,6 +54,12 @@ function onCreate(is_world_create)
     end
     if g_savedata.antilag.disable_vehicle_limit == nil then
         g_savedata.antilag.disable_vehicle_limit = false
+    end
+    if g_savedata.antilag.tps_avg_diff_threshold == nil then
+        g_savedata.antilag.tps_avg_diff_threshold = 15
+    end
+    if g_savedata.antilag.vehicle_stabilize_chances == nil then
+        g_savedata.antilag.vehicle_stabilize_chances = 0
     end
 
     tps_uiid = server.getMapID()
@@ -72,12 +78,6 @@ function onPlayerJoin(steam_id, name, peer_id, admin, auth)
     server.httpGet(verify_port, "/check?sid="..steam_id)
 end
 
-function onPlayerLeave(steam_id, name, peer_id, admin, auth)
-    -- antilag does not handle general vehicle cleanup
-    --steam_ids[peer_id] = nil
-    --peer_ids[string(steam_id)] = nil
-end
-
 function httpReply(port, url, response_body)
     if port == verify_port and string.sub(url, 1, 6) == "/check" then
         local response = json.parse(response_body)
@@ -87,14 +87,14 @@ function httpReply(port, url, response_body)
         end
 
         if response.status == false then
-            g_savedata.vehicle_limits[response.steam_id] = g_savedata.base_vehicle_limit
+            g_savedata.vehicle_limits[response.steam_id] = g_savedata.antilag.base_vehicle_limit
         elseif response.status == true then
-            g_savedata.vehicle_limits[response.steam_id] = g_savedata.auth_vehicle_limit
+            g_savedata.vehicle_limits[response.steam_id] = g_savedata.antilag.auth_vehicle_limit
         elseif response.status == "nitro" then
-            g_savedata.vehicle_limits[response.steam_id] = g_savedata.nitro_vehicle_limit
+            g_savedata.vehicle_limits[response.steam_id] = g_savedata.antilag.nitro_vehicle_limit
         else
             logError("Discord auth check failed: "..response_body)
-            g_savedata.vehicle_limits[string.sub(url, 12)] = g_savedata.base_vehicle_limit
+            g_savedata.vehicle_limits[string.sub(url, 12)] = g_savedata.antilag.base_vehicle_limit
         end
         local limit = g_savedata.vehicle_limits[response.steam_id]
         local peer_id = peer_ids[response.steam_id]
@@ -147,7 +147,17 @@ function onVehicleSpawn(vehicle_id, peer_id, x, y, z, cost)
     end
     -- TODO: Check if another vehicle is already in the spawn zone
     -- Start tracking vehicle
-    table.insert(g_savedata.user_vehicles[owner_sid], {vehicle_id=vehicle_id, vehicle_name="Unknown", spawn_time=server.getTimeMillisec(), spawn_tps=Mean(tps_buff.values), loaded=false, cleared=false})
+    table.insert(g_savedata.user_vehicles[owner_sid], {
+        peer_id=peer_id, 
+        vehicle_id=vehicle_id, 
+        vehicle_name="Unknown", 
+        spawn_time=server.getTimeMillisec(), 
+        spawn_tps=tps, 
+        spawn_avg_tps=Mean(tps_buff.values), 
+        loaded=false, 
+        cleared=false, 
+        stablize_count=0
+    })
 end
 
 function onVehicleLoad(vehicle_id)
@@ -155,7 +165,6 @@ function onVehicleLoad(vehicle_id)
     if owner_sid == -1 then return end
     local peer_id = peer_ids[owner_sid]
 
-    
     -- TODO: voxel data is now returned with vehicle data, maybe use this instead of mass?
     local vd = server.getVehicleData(vehicle_id)
     -- enforce vehicle mass limit
@@ -202,8 +211,10 @@ function onTick(game_ticks)
 
     if tps < g_savedata.antilag.tps_threshold then
         spawning_enabled = false
+        server.setGameSetting("vehicle_spawning", false)
     else
         spawning_enabled = true
+        server.setGameSetting("vehicle_spawning", true)
     end
 
     -- a possible issue here is that the list isn't sorted by vehicle ID.. so a 
@@ -220,18 +231,28 @@ function onTick(game_ticks)
                     local msg = string.format("Your vehicle was despawned for exceeding the maxmimum load time of %.1f seconds.", g_savedata.antilag.load_time_threshold / 1000)
                     server.notify(peer_ids[steam_id], antilag_notify, msg, 6)
                 end
-            -- check for excessive TPS degradation
             else
                 if not vehicle.cleared then
                     if current_time - vehicle.spawn_time > g_savedata.antilag.tps_recover_time then
-                        -- if average tps drop since spawn is > average tps - antilag threshold
                         local avg = Mean(tps_buff.values)
-                        if (vehicle.spawn_tps - avg) > (avg - g_savedata.antilag.tps_threshold) then
-                            local msg = string.format("Vehicle %d was despawned. Average server FPS was lowered from %0.2f to %0.2f", vehicle.vehicle_id, vehicle.spawn_tps, avg)
+                        local avg_ok = TPSAverageOK(vehicle.spawn_avg_tps, avg)
+                        local tps_ok = TPSInstantOK(vehicle.spawn_tps)
+
+                        -- if avg tps not recovered, but instant has then give the vehicle another timeout period to stabilise
+                        if not avg_ok and tps_ok and vehicle.stablize_count < g_savedata.antilag.vehicle_stabilize_chances then
+                            vehicle.spawn_time=server.getTimeMillisec()
+                            vehicle.stablize_count = vehicle.stablize_count + 1
+                        elseif not avg and not tps_ok then
+                            local msg = string.format("Vehicle %d was despawned. Server FPS did not stabilize in time (%0.2f to %0.2f)", vehicle.vehicle_id, vehicle.spawn_tps, tps)
                             server.notify(peer_ids[steam_id], antilag_notify, msg, 6)
+                            notifyAdmins(vehicle)
                             server.despawnVehicle(vehicle.vehicle_id, true)
-                        -- clear vehicle if it's past the TPS recover window and TPS did in fact recover
-                        else
+                        elseif not avg and tps_ok then
+                            local msg = string.format("Vehicle %d was despawned. Average FPS did not recover in time (%0.2f to %0.2f)", vehicle.vehicle_id, vehicle.spawn_avg_tps, avg)
+                            server.notify(peer_ids[steam_id], antilag_notify, msg, 6)
+                            notifyAdmins(vehicle)
+                            server.despawnVehicle(vehicle.vehicle_id, true)
+                        elseif avg_ok and tps_ok then
                             vehicle.cleared = true
                         end
                     end
@@ -258,111 +279,63 @@ function onTick(game_ticks)
     end
 end
 
+function notifyAdmins(vehicle)
+    local players = server.getPlayers()
+    for _, player in pairs(players) do
+        if player.admin == true then
+            server.announce(player.id, string.format("Vehicle %d (%s) owned by %d has been despawned by Antilag", vehicle.vehicle_id, vehicle.vehicle_name, vehicle.peer_id))
+        end
+    end
+end
+
+function TPSInstantOK(spawn_tps)
+    if spawn_tps - tps > g_savedata.antilag.tps_threshold then
+        return false
+    end 
+    return true
+end
+
+function TPSAverageOK(spawn_avg, avg)
+    if spawn_avg - avg > g_savedata.antilag.tps_avg_diff_threshold then
+        return false
+    end
+    return true
+end
+
 -- COMMAND LOGIC --
 function handleAntilagCommand(full_message, user_peer_id, is_admin, is_auth, command, args)
     local h = "[ANTI-LAG CONFIG]"
     if command == "?antilag" and is_admin then
         if args[1] == "config" then
             if args[3] ~= nil then
-                if args[2] == "max_mass" then
-                    local new_mass = tonumber(args[3])
-                    if new_mass == nil then
-                        server.announce(h, string.format("Invalid value %s", args[3]), user_peer_id)
-                        return
-                    end
-                    local old_mass = g_savedata.antilag.max_mass
-                    g_savedata.antilag.max_mass = new_mass
-                    server.announce(h, string.format("Max vehicle mass changed from %d to %d", old_mass, new_mass), user_peer_id)
+                local key = args[2]
+                local val = args[3]
+                local cval = g_savedata.antilag[key]
+                if cval == nil then
+                    server.announce(h, string.format("Invalid config key: %s", key), user_peer_id)
                     return
                 end
-                if args[2] == "tps_threshold" then
-                    local new = tonumber(args[3])
-                    if new == nil then
-                        server.announce(h, string.format("Invalid value %s", args[3]), user_peer_id)
-                        return
-                    end
-                    local old = g_savedata.antilag.tps_threshold
-                    g_savedata.antilag.tps_threshold = new
-                    server.announce(h, string.format("TPS Threshold changed from %d to %d", old, new), user_peer_id)
-                    return
-                end
-                if args[2] == "load_time_threshold" then
-                    local new = tonumber(args[3])
-                    if new == nil then
-                        server.announce(h, string.format("Invalid value %s", args[3]), user_peer_id)
-                        return
-                    end
-                    local old = g_savedata.antilag.load_time_threshold
-                    g_savedata.antilag.load_time_threshold = new
-                    server.announce(h, string.format("Load time threshold changed from %d to %d", old, new), user_peer_id)
-                    return
-                end
-                if args[2] == "tps_recover_time" then
-                    local new = tonumber(args[3])
-                    if new == nil then
-                        server.announce(h, string.format("Invalid value %s", args[3]), user_peer_id)
-                        return
-                    end
-                    local old = g_savedata.antilag.tps_recover_time
-                    g_savedata.antilag.tps_recover_time = new
-                    -- make sure to update the buffer size to account for new averaging time
-                    tps_buff = NewBuffer(g_savedata.antilag.tps_recover_time/500)
-                    server.announce(h, string.format("TPS Recovery time changed from %d to %d", old, new), user_peer_id)
-                    return
-                end
-                if args[2] == "auto_despawn_vehicle_limit" then
-                    local old = g_savedata.antilag.auto_despawn_vehicle_limit
-                    local new = old
-                    if args[3] == "true" or args[3] == "t" then
-                        new = true
-                    elseif args[3] == "false" or args[3] == "f" then
-                        new = false
+                if type(cval) == "boolean" then
+                    if string.match(val, "^[yYtT]") then
+                        val = true
+                    elseif string.match(val, "^[nNfF]") then
+                        val = false
                     else
-                        server.announce(h, string.format("Invalid value %s", args[3]), user_peer_id)
+                        server.announce(h, string.format("Invalid value \"%s\": must be true or false", val), user_peer_id)
                         return
                     end
-                    g_savedata.antilag.auto_despawn_vehicle_limit = new
-                    server.announce(h, string.format("Auto despawn vehicle limit changed from %s to %s", old, new), user_peer_id)
-                    return
+                elseif type(cval) == "number" then
+                    local n = tonumber(val)
+                    if n == nil then
+                        server.announce(h, string.format("Invalid value \"%s\": must be a number", val), user_peer_id)
+                        return
+                    end
+                    val = n
+                -- anything else is a string or an unknown type, which should be treated as a string anyway.
                 end
-                if args[2] == "admin_bypass_vehicle_limit" or args[2] == "admin_bypass" then
-                    local new = args[3]
-                    if new == nil then
-                        server.announce(h, string.format("Invalid value %s", args[3]), user_peer_id)
-                        return
-                    end
-                    if string.match(new, "^[yYtT]") then
-                        new = true
-                    elseif string.match(new, "^[nNfF]") then
-                        new = false
-                    else
-                        server.announce(h, string.format("Invalid value %s - must be true or false", args[3]), user_peer_id)
-                        return
-                    end
-                    local old = g_savedata.antilag.admin_bypass_vehicle_limit
-                    g_savedata.antilag.admin_bypass_vehicle_limit = new
-                    server.announce(h, string.format("Admin vehicle limit bypass changed from %s to %s", tostring(old), tostring(new)), user_peer_id)
-                    return
-                end
-                if args[2] == "disable_vehicle_limit" then
-                    local new = args[3]
-                    if new == nil then
-                        server.announce(h, string.format("Invalid value %s", args[3]), user_peer_id)
-                        return
-                    end
-                    if string.match(new, "^[yYtT]") then
-                        new = true
-                    elseif string.match(new, "^[nNfF]") then
-                        new = false
-                    else
-                        server.announce(h, string.format("Invalid value %s - must be true or false", args[3]), user_peer_id)
-                        return
-                    end
-                    local old = g_savedata.antilag.disable_vehicle_limit
-                    g_savedata.antilag.disable_vehicle_limit = new
-                    server.announce(h, string.format("Vehicle limit disable changed from %s to %s", tostring(old), tostring(new)), user_peer_id)
-                    return
-                end
+                g_savedata.antilag[key] = val
+                server.save()
+                return
             end
             if #args == 1 and args[1] == "config" then
                 for k, v in pairs(g_savedata.antilag) do
