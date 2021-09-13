@@ -74,6 +74,13 @@ function onCreate(is_world_create)
 	end
 end
 
+function onDestroy()
+    for _, p in pairs(server.getPlayers()) do
+        server.removePopup(p.id, tps_uiid)
+        server.removePopup(p.id, vehicle_uiid)
+    end
+end
+
 function onPlayerJoin(steam_id, name, peer_id, admin, auth)
     steam_ids[peer_id] = tostring(steam_id)
     peer_ids[tostring(steam_id)] = peer_id
@@ -209,7 +216,7 @@ end
 
 function onTick(game_ticks)
     calculateTPS()
-    current_time = server.getTimeMillisec()
+    local current_time = server.getTimeMillisec()
 
     if tps < g_savedata.antilag.tps_threshold then
         spawning_enabled = false
@@ -245,12 +252,12 @@ function onTick(game_ticks)
                 if not avg_ok and tps_ok and vehicle.stablize_count < g_savedata.antilag.vehicle_stabilize_chances then
                     vehicle.spawn_time=server.getTimeMillisec()
                     vehicle.stablize_count = vehicle.stablize_count + 1
-                elseif not avg and not tps_ok then
+                elseif not avg_ok and not tps_ok then
                     local msg = string.format("Vehicle %d was despawned. Server FPS did not stabilize in time (%0.2f to %0.2f)", vehicle.vehicle_id, vehicle.spawn_tps, tps)
                     server.notify(peer_ids[steam_id], antilag_notify, msg, 6)
                     notifyAdmins(vehicle)
                     server.despawnVehicle(vehicle.vehicle_id, true)
-                elseif not avg and tps_ok then
+                elseif not avg_ok and tps_ok then
                     local msg = string.format("Vehicle %d was despawned. Average FPS did not recover in time (%0.2f to %0.2f)", vehicle.vehicle_id, vehicle.spawn_avg_tps, avg)
                     server.notify(peer_ids[steam_id], antilag_notify, msg, 6)
                     notifyAdmins(vehicle)
@@ -289,7 +296,8 @@ function notifyAdmins(vehicle)
     local players = server.getPlayers()
     for _, player in pairs(players) do
         if player.admin == true then
-            server.announce(antilag_chat, string.format("Vehicle %d (%s) owned by %d has been despawned by Antilag", vehicle.vehicle_id, vehicle.vehicle_name, vehicle.peer_id), player.id)
+            local n = server.getPlayerName(vehicle.peer_id)
+            server.announce(antilag_chat, string.format("Vehicle %d owned by %s (%d) has been despawned by Antilag", vehicle.vehicle_id, n, vehicle.peer_id), player.id)
         end
     end
 end
