@@ -213,10 +213,14 @@ function onTick(game_ticks)
 
     if tps < g_savedata.antilag.tps_threshold then
         spawning_enabled = false
-        server.setGameSetting("vehicle_spawning", false)
+        if server.getGameSettings().vehicle_spawning == true then
+            server.setGameSetting("vehicle_spawning", false)
+        end
     else
         spawning_enabled = true
-        server.setGameSetting("vehicle_spawning", true)
+        if server.getGameSettings().vehicle_spawning == false then
+            server.setGameSetting("vehicle_spawning", true)
+        end
     end
 
     -- a possible issue here is that the list isn't sorted by vehicle ID.. so a 
