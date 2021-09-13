@@ -289,7 +289,7 @@ function notifyAdmins(vehicle)
     local players = server.getPlayers()
     for _, player in pairs(players) do
         if player.admin == true then
-            server.announce(player.id, string.format("Vehicle %d (%s) owned by %d has been despawned by Antilag", vehicle.vehicle_id, vehicle.vehicle_name, vehicle.peer_id))
+            server.announce(antilag_chat, string.format("Vehicle %d (%s) owned by %d has been despawned by Antilag", vehicle.vehicle_id, vehicle.vehicle_name, vehicle.peer_id), player.id)
         end
     end
 end
@@ -340,6 +340,7 @@ function handleAntilagCommand(full_message, user_peer_id, is_admin, is_auth, com
                 -- anything else is a string or an unknown type, which should be treated as a string anyway.
                 end
                 g_savedata.antilag[key] = val
+                server.announce(h, string.format("%s: %s -> %s", key, tostring(cval), tostring(val)), user_peer_id)
                 server.save()
                 return
             end
