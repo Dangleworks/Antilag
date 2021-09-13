@@ -15,6 +15,8 @@ ticks_time = 0
 ticks = 0
 tps_buff = {}
 
+vpop_delay = 0
+
 function onCreate(is_world_create)
     if g_savedata.antilag == nil then
         g_savedata.antilag = {}
@@ -231,50 +233,50 @@ function onTick(game_ticks)
                     local msg = string.format("Your vehicle was despawned for exceeding the maxmimum load time of %.1f seconds.", g_savedata.antilag.load_time_threshold / 1000)
                     server.notify(peer_ids[steam_id], antilag_notify, msg, 6)
                 end
-            else
-                if not vehicle.cleared then
-                    if current_time - vehicle.spawn_time > g_savedata.antilag.tps_recover_time then
-                        local avg = Mean(tps_buff.values)
-                        local avg_ok = TPSAverageOK(vehicle.spawn_avg_tps, avg)
-                        local tps_ok = TPSInstantOK(vehicle.spawn_tps)
-
-                        -- if avg tps not recovered, but instant has then give the vehicle another timeout period to stabilise
-                        if not avg_ok and tps_ok and vehicle.stablize_count < g_savedata.antilag.vehicle_stabilize_chances then
-                            vehicle.spawn_time=server.getTimeMillisec()
-                            vehicle.stablize_count = vehicle.stablize_count + 1
-                        elseif not avg and not tps_ok then
-                            local msg = string.format("Vehicle %d was despawned. Server FPS did not stabilize in time (%0.2f to %0.2f)", vehicle.vehicle_id, vehicle.spawn_tps, tps)
-                            server.notify(peer_ids[steam_id], antilag_notify, msg, 6)
-                            notifyAdmins(vehicle)
-                            server.despawnVehicle(vehicle.vehicle_id, true)
-                        elseif not avg and tps_ok then
-                            local msg = string.format("Vehicle %d was despawned. Average FPS did not recover in time (%0.2f to %0.2f)", vehicle.vehicle_id, vehicle.spawn_avg_tps, avg)
-                            server.notify(peer_ids[steam_id], antilag_notify, msg, 6)
-                            notifyAdmins(vehicle)
-                            server.despawnVehicle(vehicle.vehicle_id, true)
-                        elseif avg_ok and tps_ok then
-                            vehicle.cleared = true
-                        end
-                    end
+            elseif not vehicle.cleared and (current_time - vehicle.spawn_time > g_savedata.antilag.tps_recover_time) then
+                local avg = Mean(tps_buff.values)
+                local avg_ok = TPSAverageOK(vehicle.spawn_avg_tps, avg)
+                local tps_ok = TPSInstantOK(vehicle.spawn_tps)
+                -- if avg tps not recovered, but instant has then give the vehicle another timeout period to stabilise
+                if not avg_ok and tps_ok and vehicle.stablize_count < g_savedata.antilag.vehicle_stabilize_chances then
+                    vehicle.spawn_time=server.getTimeMillisec()
+                    vehicle.stablize_count = vehicle.stablize_count + 1
+                elseif not avg and not tps_ok then
+                    local msg = string.format("Vehicle %d was despawned. Server FPS did not stabilize in time (%0.2f to %0.2f)", vehicle.vehicle_id, vehicle.spawn_tps, tps)
+                    server.notify(peer_ids[steam_id], antilag_notify, msg, 6)
+                    notifyAdmins(vehicle)
+                    server.despawnVehicle(vehicle.vehicle_id, true)
+                elseif not avg and tps_ok then
+                    local msg = string.format("Vehicle %d was despawned. Average FPS did not recover in time (%0.2f to %0.2f)", vehicle.vehicle_id, vehicle.spawn_avg_tps, avg)
+                    server.notify(peer_ids[steam_id], antilag_notify, msg, 6)
+                    notifyAdmins(vehicle)
+                    server.despawnVehicle(vehicle.vehicle_id, true)
+                elseif avg_ok and tps_ok then
+                    vehicle.cleared = true
                 end
             end
         end
     end
 
-    for idx, player in pairs(server.getPlayers()) do
-        local sid = tostring(player.steam_id)
-        local max = g_savedata.vehicle_limits[sid]
-        if max == nil then
-            max = g_savedata.antilag.base_vehicle_limit
-        end
-        local vehicles = g_savedata.user_vehicles[sid]
-        if vehicles == nil then
-            vehicles = {}
-        end
-        if g_savedata.antilag.disable_vehicle_limit then
-            server.setPopupScreen(player.id, vehicle_uiid, "Vehicles", true, string.format("Vehicles: %d", #vehicles, max), 0.4, 0.88)
-        else
-            server.setPopupScreen(player.id, vehicle_uiid, "Vehicles", true, string.format("Vehicles: %d/%d", #vehicles, max), 0.4, 0.88)
+    vpop_delay = vpop_delay + 1
+    if vpop_delay > 60 then
+        vpop_delay = 0
+        local players = server.getPlayers()
+        for idx, player in ipairs(players) do
+            local sid = tostring(player.steam_id)
+            local max = g_savedata.vehicle_limits[sid]
+            if max == nil then
+                max = g_savedata.antilag.base_vehicle_limit
+            end
+            local vehicles = g_savedata.user_vehicles[sid]
+            if vehicles == nil then
+                vehicles = {}
+            end
+            if g_savedata.antilag.disable_vehicle_limit == true then
+                server.setPopupScreen(player.id, vehicle_uiid, "Vehicles", true, string.format("Vehicles: %d", #vehicles, max), 0.4, 0.88)
+            else
+                server.setPopupScreen(player.id, vehicle_uiid, "Vehicles", true, string.format("Vehicles: %d/%d", #vehicles, max), 0.4, 0.88)
+            end
         end
     end
 end
