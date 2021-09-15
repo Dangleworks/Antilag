@@ -63,6 +63,12 @@ function onCreate(is_world_create)
     if g_savedata.antilag.vehicle_stabilize_chances == nil then
         g_savedata.antilag.vehicle_stabilize_chances = 0
     end
+    if g_savedata.antilag.remove_objects == nil then
+        g_savedata.antilag.remove_objects = true
+    end
+    if g_savedata.lastOID == nil then
+        g_savedata.lastOID = 0
+    end
 
     tps_uiid = server.getMapID()
     vehicle_uiid = server.getMapID()
@@ -287,6 +293,25 @@ function onTick(game_ticks)
                 server.setPopupScreen(player.id, vehicle_uiid, "Vehicles", true, string.format("Vehicles: %d", #vehicles, max), 0.4, 0.88)
             else
                 server.setPopupScreen(player.id, vehicle_uiid, "Vehicles", true, string.format("Vehicles: %d/%d", #vehicles, max), 0.4, 0.88)
+            end
+        end
+    end
+
+    if g_savedata.antilag.remove_objects == true then despawnObjects() end
+end
+
+function despawnObjects()
+    local running = true
+    local oid = g_savedata.lastOID + 1
+    while running do
+        local _, ok = server.getObjectPos(oid)
+        if ok then
+            server.despawnObject(oid, true)
+            oid = oid + 1
+        else
+            running = false
+            if g_savedata.lastOID + 1 < oid then
+                g_savedata.lastOID = oid - 1
             end
         end
     end
