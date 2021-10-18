@@ -34,7 +34,7 @@ function onCreate(is_world_create)
         g_savedata.antilag.max_mass = 70000
     end
     if g_savedata.antilag.tps_threshold == nil then
-        g_savedata.antilag.tps_threshold = 50
+        g_savedata.antilag.tps_threshold = 45
     end
     if g_savedata.antilag.load_time_threshold == nil then
         g_savedata.antilag.load_time_threshold = 3000
@@ -61,7 +61,7 @@ function onCreate(is_world_create)
         g_savedata.antilag.tps_avg_diff_threshold = 15
     end
     if g_savedata.antilag.vehicle_stabilize_chances == nil then
-        g_savedata.antilag.vehicle_stabilize_chances = 0
+        g_savedata.antilag.vehicle_stabilize_chances = 1
     end
     if g_savedata.antilag.remove_objects == nil then
         g_savedata.antilag.remove_objects = true
@@ -99,6 +99,7 @@ function httpReply(port, url, response_body)
         if response == nil then 
             response = {}
             logError("Discord Auth - Failed to parse response body: "..response_body)
+            return
         end
 
         if response.status == false then
@@ -111,8 +112,6 @@ function httpReply(port, url, response_body)
             logError("Discord auth check failed: "..response_body)
             g_savedata.vehicle_limits[string.sub(url, 12)] = g_savedata.antilag.base_vehicle_limit
         end
-        local limit = g_savedata.vehicle_limits[response.steam_id]
-        local peer_id = peer_ids[response.steam_id]
     end
 end
 
