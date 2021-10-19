@@ -1,5 +1,5 @@
 # AntiLag
-Please keep in mind, this is a work-in-progress, and there can be some issues. Please report any problems [here](https://github.com/Dangleworks/Antilag)
+Please keep in mind, this is a work-in-progress, and there can be some issues. Please report any problems [here](https://github.com/Dangleworks/Antilag/issues)
 ## Commands
 There's only only really one command, `?antilag config`, which allows you to change almost all the settings on the fly without reloading the script. Any changes you make with the command will be saved to the world, and will reset if you reset the world file.
 
